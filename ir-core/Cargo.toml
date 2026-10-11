@@ -1,0 +1,15 @@
+[package]
+name = "ir-core"
+version = "0.1.0"
+edition = "2021"
+description = "Mabe / Midea / Coolix infrared frame encoder"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true

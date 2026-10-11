@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: Fraunces;
+  src: url("./assets/fonts/fraunces-560.woff2") format("woff2");
+  font-weight: 500 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Outfit;
+  src: url("./assets/fonts/outfit-400.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Fraunces", ui-serif, Georgia, serif;
+
+  --color-wall: #e6dfd2;
+  --color-wall-cool: #dde4e2;
+  --color-wall-heat: #eadfd4;
+  --color-cream: #f4efe6;
+  --color-ink: #1c1915;
+  --color-muted: #4e463e;
+  --color-line: #e4dace;
+  --color-lagoon: #1f6f8b;
+  --color-heat: #c4552a;
+
+  --shadow-card:
+    0px 0px 0px 1px rgba(28, 25, 21, 0.06),
+    0px 1px 2px -1px rgba(28, 25, 21, 0.06),
+    0px 18px 40px -18px rgba(28, 25, 21, 0.28);
+  --shadow-key:
+    0px 0px 0px 1px rgba(28, 25, 21, 0.08),
+    0px 1px 1px rgba(28, 25, 21, 0.04);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-wall);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  button:focus-visible,
+  [role="button"]:focus-visible,
+  a:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+}
+
+.statusbar {
+  padding-top: env(safe-area-inset-top);
+}
+
+.stage {
+  padding-bottom: calc(env(safe-area-inset-bottom) + 1.5rem);
+}
+
+[data-climate="cool"] {
+  background: var(--color-wall-cool);
+}
+
+[data-climate="heat"] {
+  background: var(--color-wall-heat);
+}
+
+.grille {
+  background-color: var(--color-ink);
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 3px,
+    rgb(244 239 230 / 0.16) 3px 4px
+  );
+}
+
+.unit-well {
+  perspective: 280px;
+}
+
+.louver {
+  height: 0.7rem;
+  border-radius: 0 0 0.7rem 0.7rem;
+  background: linear-gradient(180deg, #f7f3ec, #d9d1c4);
+  transform-origin: center top;
+  transform: rotateX(12deg);
+  transition: transform 240ms ease;
+}
+
+.louver[data-open="true"] {
+  transform: rotateX(52deg);
+}
+
+.louver[data-swing="true"] {
+  animation: louver 2.6s ease-in-out infinite alternate;
+}
+
+.air {
+  animation: air 1.6s ease-in-out infinite;
+}
+
+.led[data-hot="true"] {
+  animation: led 0.7s ease-out;
+}
+
+@keyframes louver {
+  from {
+    transform: rotateX(20deg);
+  }
+  to {
+    transform: rotateX(68deg);
+  }
+}
+
+@keyframes air {
+  0% {
+    opacity: 0.15;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@keyframes led {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgb(244 239 230 / 0.7);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgb(244 239 230 / 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .louver,
+  .louver[data-swing="true"],
+  .air,
+  .led[data-hot="true"] {
+    animation: none;
+    transition: none;
+  }
+}
